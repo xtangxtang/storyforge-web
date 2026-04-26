@@ -23,7 +23,6 @@ function createWindow() {
   } else {
     // 使用自定义 app:// 协议加载，绕过 file:// 下 ES 模块跨源限制
     mainWindow.loadURL('app://./index.html');
-    mainWindow.webContents.openDevTools();
   }
 
   mainWindow.on('closed', () => {
