@@ -1,33 +1,33 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import electron from 'vite-plugin-electron';
-import renderer from 'vite-plugin-electron-renderer';
 
+// 仅构建 Electron 主进程和 preload，不碰 dist/
 export default defineConfig({
+  build: {
+    // 输出到 dist-electron/，避免覆盖 renderer 的 dist/
+    outDir: 'dist-electron',
+    emptyOutDir: false,
+  },
   plugins: [
-    react(),
     electron([
       {
         entry: 'electron/main.ts',
         vite: {
           build: {
             outDir: 'dist-electron',
+            emptyOutDir: true,
           },
         },
       },
       {
         entry: 'electron/preload.ts',
-        onstart(args) {
-          args.reload();
-        },
         vite: {
           build: {
             outDir: 'dist-electron',
+            emptyOutDir: false,
           },
         },
       },
     ]),
-    renderer(),
   ],
-  base: './',
 });
