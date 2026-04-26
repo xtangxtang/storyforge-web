@@ -1,6 +1,9 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
+// 允许 file:// 协议下加载 ES 模块（默认被 Chromium CORS 策略阻止）
+app.commandLine.appendSwitch('allow-file-access-from-files');
+
 let mainWindow: BrowserWindow | null = null;
 
 function createWindow() {
@@ -14,8 +17,6 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
-      webSecurity: false,
-      allowRunningInsecureContent: false,
     },
   });
 
@@ -23,7 +24,7 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:5173');
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
+    mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'));
   }
 
   mainWindow.on('closed', () => {
