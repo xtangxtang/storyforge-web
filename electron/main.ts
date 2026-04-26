@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
@@ -14,6 +14,9 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
+      // 关闭 webSecurity 以允许 file:// 协议下的 ES 模块加载
+      // 本地应用无需担心跨源攻击
+      webSecurity: false,
     },
   });
 
@@ -21,8 +24,7 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:5173');
     mainWindow.webContents.openDevTools();
   } else {
-    // 使用自定义 app:// 协议加载，绕过 file:// 下 ES 模块跨源限制
-    mainWindow.loadURL('app://./index.html');
+    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
 
   mainWindow.on('closed', () => {
@@ -30,15 +32,7 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(() => {
-  // 注册自定义协议，指向 asar 内的 dist/ 目录
-  protocol.registerFileProtocol('app', (request, callback) => {
-    const relPath = request.url.replace('app://./', '');
-    const filePath = path.join(__dirname, '../dist', relPath);
-    callback({ path: filePath });
-  });
-  createWindow();
-});
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
