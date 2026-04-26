@@ -24,6 +24,13 @@ jobs:
       - name: Build web renderer
         run: npx vite build
 
+      - name: Remove crossorigin from HTML (fix Electron file:// module loading)
+        run: (Get-Content dist/index.html -Raw) -replace '\s+crossorigin(="[^"]*")?', '' | Set-Content dist/index.html -Encoding UTF8 -NoNewline
+
+      - name: Verify HTML
+        run: |
+          Get-Content dist/index.html | Select-String "script"
+
       - name: Build Electron main process
         run: npx vite build --config vite.electron.config.ts
 
