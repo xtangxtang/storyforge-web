@@ -2,7 +2,7 @@
 
 > AI 驱动的短视频制作工具 — Web 版（Electron / Android）
 
-## 快速开始
+## 安装与部署
 
 ### Web 开发（浏览器）
 
@@ -18,22 +18,24 @@ npm run dev
 # 开发模式（自动热重载）
 npm run electron:dev
 
-# 构建安装包
+# 构建安装包（需要 Windows 环境）
 npm run electron:build
 # 输出：release/Storyforge Setup x.x.x.exe
 ```
 
+> 详见 [doc/windows-install.md](doc/windows-install.md) — 包括从 GitHub Releases/Actions 下载预构建安装程序的方法。
+
 ### Android 版
 
 ```bash
-# 同步到 Android 项目
-npx cap sync android
+# 构建 Web 前端并同步到 Android 项目
+npm run build && npm run android:sync
 
-# 用 Android Studio 打开
-npx cap open android
-
-# 或在 Android Studio 中直接 Build → Build APK
+# 用 Android Studio 打开并构建 APK
+npm run android:open
 ```
+
+> 详见 [doc/android-install.md](doc/android-install.md) — 包括下载预构建 APK 和命令行构建的方法。
 
 ## 技术栈
 
