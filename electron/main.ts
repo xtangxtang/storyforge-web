@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 
 let mainWindow: BrowserWindow | null = null;
@@ -14,6 +14,8 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
+      webSecurity: false,
+      allowRunningInsecureContent: false,
     },
   });
 
@@ -21,7 +23,7 @@ function createWindow() {
     mainWindow.loadURL('http://localhost:5173');
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadURL('app://./index.html');
+    mainWindow.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
   }
 
   mainWindow.on('closed', () => {
@@ -29,15 +31,7 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(() => {
-  protocol.registerFileProtocol('app', (request, callback) => {
-    const url = request.url.replace('app://./', '');
-    // app.getAppPath() 在打包后指向 app.asar 的父目录
-    const filePath = path.join(app.getAppPath(), 'dist', url);
-    callback({ path: filePath });
-  });
-  createWindow();
-});
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
