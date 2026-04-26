@@ -12,9 +12,21 @@ Storyforge 提供 Windows 桌面应用，可通过 Electron 打包为 `.exe` 安
 2. 下载最新版本的 `.exe` 安装文件（例如 `Storyforge Setup 1.0.0.exe`）
 3. 双击安装文件，按提示完成安装
 
-### 从 GitHub Actions 下载（开发版本）
+### 从 GitHub Actions 下载
 
-如果你需要最新的开发版本（尚未发布 Release）：
+如果你需要最新的版本（开发版或尚未发布 Release）：
+
+#### 方法 A：手动触发构建（推荐）
+
+1. 打开 [Storyforge Actions 页面](https://github.com/xtangxtang/storyforge-web/actions)
+2. 点击 **"Build Windows Release"** 工作流
+3. 点击右侧 **"Run workflow"** 按钮 → 在下拉菜单中点击 **"Run workflow"**
+4. 等待 2-3 分钟，构建完成后点击该运行记录
+5. 滚动到底部，点击 **"Storyforge-Setup"** 下载 `.exe` 文件
+
+#### 方法 B：下载已有的构建记录
+
+如果已经有现成的构建：
 
 1. 打开 [Storyforge Actions 页面](https://github.com/xtangxtang/storyforge-web/actions)
 2. 点击 **"Build Windows Release"** 工作流
