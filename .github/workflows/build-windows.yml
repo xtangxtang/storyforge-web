@@ -24,6 +24,9 @@ jobs:
       - name: Build web renderer
         run: npx vite build
 
+      - name: Remove crossorigin attr (fix ES module loading in Electron file://)
+        run: (Get-Content dist/index.html -Raw) -replace '\s+crossorigin(="[^"]*")?', '' | Set-Content dist/index.html -Encoding UTF8 -NoNewline
+
       - name: Build Electron main process
         run: npx vite build --config vite.electron.config.ts
 
